@@ -5,7 +5,7 @@ using LuaInterface;
 namespace FairyGUI
 {
     /// <summary>
-    /// 
+    /// 事件的监听者
     /// </summary>
     public class EventListener
     {
@@ -195,6 +195,7 @@ namespace FairyGUI
         {
             get
             {
+                // todo：return _bridge._dispatching; //了解为什么不直接这样写？
                 return _bridge.owner.isDispatching(_type);
             }
         }

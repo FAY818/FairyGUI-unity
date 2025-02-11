@@ -6,22 +6,26 @@ using LuaInterface;
 namespace FairyGUI
 {
     /// <summary>
-    /// 
+    /// 事件的桥接器
     /// </summary>
     class EventBridge
     {
-        public EventDispatcher owner;
-
-        EventCallback0 _callback0;
-        EventCallback1 _callback1;
-        EventCallback1 _captureCallback;
-        internal bool _dispatching;
+        public EventDispatcher owner; // 持有者
+        
+        EventCallback0 _callback0; // 无参委托
+        EventCallback1 _callback1; // 有参委托
+        EventCallback1 _captureCallback; // 有参委托（捕获事件）
+        internal bool _dispatching; // 事件派发中（执行中）
 
         public EventBridge(EventDispatcher owner)
         {
             this.owner = owner;
         }
 
+        /// <summary>
+        /// 捕获事件添加
+        /// </summary>
+        /// <param name="callback"></param>
         public void AddCapture(EventCallback1 callback)
         {
             _captureCallback -= callback;

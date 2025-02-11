@@ -49,7 +49,7 @@ namespace FairyGUI
         /// <summary>
         /// 
         /// </summary>
-        public GObject gOwner;
+        public GObject gOwner ;
 
         /// <summary>
         /// 

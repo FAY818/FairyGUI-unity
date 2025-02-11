@@ -11,16 +11,16 @@ namespace FairyGUI
     public class StageCamera : MonoBehaviour
     {
         /// <summary>
-        /// 
+        /// 是否是固定的相机size，勾选 constantSize 后，相机会确保 UI 元素在不同分辨率下保持相同的物理尺寸
         /// </summary>
         public bool constantSize = true;
 
         /// <summary>
-        /// 
+        /// 每像素对应的单位数，主要用于控制 UI 的分辨率适应性。
         /// </summary>
         [NonSerialized]
         public float unitsPerPixel = 0.02f;
-
+        
         [NonSerialized]
         public Transform cachedTransform;
         [NonSerialized]
@@ -31,26 +31,35 @@ namespace FairyGUI
         [NonSerialized]
         int screenHeight;
         [NonSerialized]
-        bool isMain;
+        bool isMain; // 当前的cachedCamera是否为主相机
         [NonSerialized]
-        Display _display;
+        Display _display; // 相机的渲染目标
 
         /// <summary>
-        /// 
+        /// UI主相机
         /// </summary>
         [NonSerialized]
         public static Camera main;
 
         /// <summary>
-        /// 
+        /// 屏幕尺寸的变化计数
         /// </summary>
         [NonSerialized]
         public static int screenSizeVer = 1;
-
+        
         public const string Name = "Stage Camera";
+        /// <summary>
+        /// Stage Camera的渲染层
+        /// </summary>
         public const string LayerName = "UI";
 
-        public static float DefaultCameraSize = 5;
+        /// <summary>
+        /// 默认的相机适口size
+        /// </summary>
+        public static float DefaultCameraSize = 6;
+        /// <summary>
+        /// 默认单位像素比
+        /// </summary>
         public static float DefaultUnitsPerPixel = 0.02f;
 
 #if UNITY_2019_3_OR_NEWER
@@ -63,6 +72,7 @@ namespace FairyGUI
 
         void OnEnable()
         {
+            // 主相机设置
             cachedTransform = this.transform;
             cachedCamera = this.GetComponent<Camera>();
             if (this.gameObject.name == Name)
@@ -94,6 +104,11 @@ namespace FairyGUI
             }
         }
 
+        /// <summary>
+        /// 屏幕尺寸变化响应函数
+        /// </summary>
+        /// <param name="newWidth"></param>
+        /// <param name="newHeight"></param>
         void OnScreenSizeChanged(int newWidth, int newHeight)
         {
             if (newWidth == 0 || newHeight == 0)
@@ -101,15 +116,17 @@ namespace FairyGUI
 
             screenWidth = newWidth;
             screenHeight = newHeight;
-
+            
             if (constantSize)
             {
+                // 根据默认的相机size，推算单位像素比
                 cachedCamera.orthographicSize = DefaultCameraSize;
                 unitsPerPixel = cachedCamera.orthographicSize * 2 / screenHeight;
             }
             else
             {
-                unitsPerPixel = DefaultUnitsPerPixel;
+                // 根据默认的单位像素比，推算相机size
+                unitsPerPixel = DefaultUnitsPerPixel; 
                 cachedCamera.orthographicSize = screenHeight / 2 * unitsPerPixel;
             }
             cachedTransform.localPosition = new Vector3(cachedCamera.orthographicSize * screenWidth / screenHeight, -cachedCamera.orthographicSize);
@@ -159,7 +176,7 @@ namespace FairyGUI
                 CreateCamera(Name, 1 << layer);
             }
 
-            HitTestContext.cachedMainCamera = Camera.main;
+            HitTestContext.cachedMainCamera = Camera.main; // 点击测试的依赖相机
         }
 
         /// <summary>

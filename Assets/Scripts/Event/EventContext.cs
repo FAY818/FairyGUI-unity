@@ -9,27 +9,27 @@ namespace FairyGUI
     public class EventContext
     {
         /// <summary>
-        /// 
+        /// 事件的派发着
         /// </summary>
         public EventDispatcher sender { get; internal set; }
 
         /// <summary>
-        /// /
+        /// 事件的发起对象
         /// </summary>
         public object initiator { get; internal set; }
 
         /// <summary>
-        /// /
+        /// 输入事件对象
         /// </summary>
         public InputEvent inputEvent { get; internal set; }
 
         /// <summary>
-        /// 
+        /// 事件类型
         /// </summary>
         public string type;
 
         /// <summary>
-        /// 
+        /// 自定义参数
         /// </summary>
         public object data;
 
@@ -37,10 +37,11 @@ namespace FairyGUI
         internal bool _stopsPropagation;
         internal bool _touchCapture;
 
+        // 事件的触发链
         internal List<EventBridge> callChain = new List<EventBridge>();
 
         /// <summary>
-        /// 
+        /// 停止传播
         /// </summary>
         public void StopPropagation()
         {
@@ -48,7 +49,7 @@ namespace FairyGUI
         }
 
         /// <summary>
-        /// 
+        /// 默认阻塞
         /// </summary>
         public void PreventDefault()
         {
@@ -56,7 +57,7 @@ namespace FairyGUI
         }
 
         /// <summary>
-        /// 
+        /// 捕获触控
         /// </summary>
         public void CaptureTouch()
         {

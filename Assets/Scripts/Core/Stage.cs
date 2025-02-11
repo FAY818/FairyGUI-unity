@@ -927,6 +927,12 @@ namespace FairyGUI
             HitTestContext.ClearRaycastHitCache();
         }
 
+        /// <summary>
+        /// StageCamera参数改变时，修改stage以适配
+        /// </summary>
+        /// <param name="screenWidth"></param>
+        /// <param name="screenHeight"></param>
+        /// <param name="unitsPerPixel"></param>
         internal void HandleScreenSizeChanged(int screenWidth, int screenHeight, float unitsPerPixel)
         {
             SetSize(screenWidth, screenHeight);
